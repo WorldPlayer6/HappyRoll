@@ -1,0 +1,180 @@
+using System;
+
+namespace HappyRoll
+{
+    class Program
+    {
+        // These static ints are able to be tallied throughout the duration of the program. 
+        static int greenCounter;
+        static int blueCounter;
+        static int purpleCounter;
+        static int redCounter;
+        static int blackCounter;
+        static int whiteCounter;
+
+        //RandomRoll method generates a number between 1-6 and assigns a token to the rolled number.
+        //That token is then credited a +1 in value to be displayed in the inventory.
+        static void RandomRoll(int rollAmount)
+        {
+            while (rollAmount > 0)
+            {
+                rollAmount--;
+                Random rnd = new Random();
+                int num = rnd.Next(1, 7);
+                switch (num) 
+                {
+                    case (1):
+                        greenCounter++;
+                        Console.WriteLine("You rolled 1 green token!");
+                        break;
+                    case (2):
+                        blueCounter++;
+                        Console.WriteLine("You rolled 1 blue token!");
+                        break;
+                    case (3):
+                        purpleCounter++;
+                        Console.WriteLine("You rolled 1 purple token!");
+                        break;
+                    case (4):
+                        redCounter++;
+                        Console.WriteLine("You rolled 1 red token!");
+                        break;
+                    case (5):
+                        blackCounter++;
+                        Console.WriteLine("You rolled 1 black token!");
+                        break;
+                    case (6):
+                        whiteCounter++;
+                        Console.WriteLine("You rolled 1 white token!");
+                        break;
+                    default:
+                        Console.WriteLine("There was an error in your RandomRoll method causing the random number to be outside the designated range");
+                        Console.WriteLine("The random roll was " + num);
+                        break;
+                }
+            }
+        }
+        //The InventoryComp method simply displays the amount of tokens that the user has created by refrencing to the counter for each token.
+        static void InventoryComp()
+        {
+            Console.WriteLine($"You've collected {greenCounter} green tokens.");
+            Console.WriteLine($"You've collected {blueCounter} blue tokens.");
+            Console.WriteLine($"You've collected {purpleCounter} purple tokens.");
+            Console.WriteLine($"You've collected {redCounter} red tokens.");
+            Console.WriteLine($"You've collected {blackCounter} black tokens.");
+            Console.WriteLine($"You've collected {whiteCounter} white tokens.");
+        }
+
+        static void Main(string[] args)
+        {
+            Beginning:
+            Console.WriteLine("Welcome to Happy Rolls!\nPlease type either \"Play\",\"Inventory\" or \"Exit\"");
+            int responseType = 0;
+            do
+            {
+                string gamemode = Console.ReadLine();
+                gamemode = gamemode.ToLower();
+                switch (gamemode)
+                {
+                    case ("play"):
+                        StartPlay:
+                        Console.WriteLine("How many times would you like to roll? You may roll up to a max of 5 at once, or type \"Back\" to return to the main menu.");
+                        BeginningPlay:
+                        string rollAmount = Console.ReadLine();
+                        if(rollAmount == "Back")
+                        {
+                            rollAmount = rollAmount.ToLower();
+                        }
+                        if (rollAmount != "back")
+                        {
+                            try
+                            {
+                                int intRollAmount = Int32.Parse(rollAmount);
+                                switch (intRollAmount)
+                                {
+                                    case (1):
+                                        RandomRoll(1);
+                                        PublicRollPrompt:
+                                        Console.WriteLine("Your results are listed above. Please type \"Play\" to play again or \"Back\" to return to the main menu.");
+                                        RandomRoll:
+                                        string whereToGo = Console.ReadLine();
+                                        whereToGo = whereToGo.ToLower();
+                                        if(whereToGo == "play")
+                                         {
+                                            goto StartPlay;
+                                         }
+                                        if (whereToGo == "back")
+                                        {
+                                            goto Beginning;
+                                        }
+                                        else 
+                                        {
+                                            Console.WriteLine("You entered an invalid command.\nPlease type \"Play\" to play again or \"Back\" to return to the main menu.");
+                                            goto RandomRoll;
+                                        }
+                                        break;
+                                    case (2):
+                                        RandomRoll(2);
+                                        goto PublicRollPrompt;
+                                        break;
+                                    case (3):
+                                        RandomRoll(3);
+                                        goto PublicRollPrompt;
+                                        break;
+                                    case (4):
+                                        RandomRoll(4);
+                                        goto PublicRollPrompt;
+                                        break;
+                                    case (5):
+                                        RandomRoll(5);
+                                        goto PublicRollPrompt;
+                                        break;
+                                    default:
+                                        Console.WriteLine("You did not enter a valid number.\nPlease type how many times you'd like to roll (Max 5), or type \"Back\" to return to the main menu.");
+                                        goto BeginningPlay;
+                                        break;
+                                }
+                            }
+                            catch 
+                            {
+                                Console.WriteLine("You did not enter a valid number.\nPlease type how many times you'd like to roll (Max 5), or type \"Back\" to return to the main menu.");
+                                goto BeginningPlay;
+                            }
+                        }
+                        else {
+                            goto Beginning;
+                            //Console.WriteLine("Welcome to Happy Rolls!\nPlease type either \"Play\",\"Inventory\" or \"Exit\"");
+                        }
+
+                        break;
+
+                    case ("inventory"):
+                        InventoryComp();
+                        Console.WriteLine("Type \"Back\" to return to the main menu.");
+                        InventoryInvalidCommand:
+                        string checkingForBack = Console.ReadLine();
+                        if (checkingForBack == "Back") 
+                        {
+                            checkingForBack = checkingForBack.ToLower();
+                        }
+                        if (checkingForBack != "back")
+                        {
+                            Console.WriteLine("Command not recognized, type \"Back\" to return to the main menu.");
+                            goto InventoryInvalidCommand;
+                        }
+                        else
+                        {
+                            goto Beginning;
+                        }
+                        break;
+                    case ("exit"):
+                        System.Environment.Exit(1);
+                        break;
+                    default:
+                        Console.WriteLine("The answer you typed is not acceptable. Please type \"Play\",\"Inventory\" or \"Exit\"");
+                        break;
+                }
+            } while (responseType == 0);
+        }
+    }
+}
